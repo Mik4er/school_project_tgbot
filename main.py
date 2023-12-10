@@ -2,7 +2,8 @@ import requests
 import datetime
 
 from aiogram.types import ReplyKeyboardMarkup, Location, KeyboardButton
-from magic_filter import F
+
+
 
 from config import BOT_TOKEN, weather_token
 from aiogram import Bot, types
@@ -12,6 +13,7 @@ from aiogram.utils import executor
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot)
+
 
 button_loc = KeyboardButton("Share your location", request_location=True)
 main = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -70,6 +72,12 @@ async def loc(message: Location):
         await message.reply("😵‍💫 Check the city name 😵‍💫")
 
 
+@dp.message_handler(commands=['start'])
+async def cmd_start(message: types.Message):
+    await message.answer(f'Hello {message.from_user.full_name}!\nIm a weather forecast bot. Please write the city in which you live')
+
+
+
 @dp.message_handler()
 async def get_weather(message: types.Message):
     code_to_smile = {
@@ -108,6 +116,8 @@ async def get_weather(message: types.Message):
         await message.reply(f"***{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}***\n"
               f"Weather in the city: {city}\nTemperature: {cur_weather}C° {wd}\n"
               f"Humidity: {humidity}%\nPressure: {pressure}  millimeters of mercury:\nWind: {wind} m/s\n"
+               f"Weather in the city: {city}\nTemperature: {cur_weather}C° {wd}\n"
+              f"Humidity: {humidity}%\nPressure: {pressure}  millimeters of mercury:\nВетер: {wind} m/s\n"
               f"Sunrise: {sunrise_timestamp}\nSunset: {sunset_timestamp}\nLength of day: {length_of_the_day}\n"
               f"Have a good day!"
               )
